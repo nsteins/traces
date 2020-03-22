@@ -1,6 +1,6 @@
 from datetime import datetime
 import pickle
-import nose
+from pytest import raises, approx
 
 from traces import TimeSeries
 import csv
@@ -117,7 +117,8 @@ def test_set_interval():
     assert list(tsc.items()) == [(1.2, 1), (2, 5), (3, 4), (5, 0), (6, 2)]
 
     tsd = TimeSeries()
-    nose.tools.assert_raises(ValueError, tsd.set_interval, 4, 4, 4)
+    with raises(ValueError):
+        tsd.set_interval(4, 4, 4)
 
 
 def test_set_interval_datetime():
@@ -206,7 +207,7 @@ def test_csv():
     assert ts[13.5] is None
 
     histogram = ts.distribution()
-    nose.tools.assert_almost_equal(histogram.mean(), (15 + 34 + 19 + 18) / 4.0)
+    assert histogram.mean() == approx((15 + 34 + 19 + 18) / 4.0)
 
     filename = 'sample.csv'
     with open(filename, 'w') as csvfile:

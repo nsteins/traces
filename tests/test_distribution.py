@@ -1,5 +1,5 @@
 import datetime
-import nose
+import pytest
 from traces import TimeSeries, Histogram
 
 
@@ -113,7 +113,7 @@ def test_distribution_empty():
 
     # distribution with default args and no default value on empty
     # TimeSeries doesn't know what to do
-    nose.tools.assert_raises(KeyError, ts.distribution)
+    pytest.raises(KeyError, ts.distribution)
 
     # distribution with start and end, but no default value on empty
     # TimeSeries doesn't know what to do
@@ -127,7 +127,7 @@ def test_distribution_empty():
     ts = TimeSeries(default=0)
 
     # no mask or start/end on empty TimeSeries, don't know what to do
-    nose.tools.assert_raises(KeyError, ts.distribution)
+    pytest.raises(KeyError, ts.distribution)
 
     # start and end or mask given, is fine
     distribution = ts.distribution(0, 10)
@@ -139,10 +139,10 @@ def test_distribution_empty():
     # empty mask
     mask = TimeSeries(default=0)
 
-    with nose.tools.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         ts.distribution(mask=mask)
 
-    with nose.tools.assert_raises(ValueError):
+    with pytest.raises(ValueError):
         ts.distribution(start=0, end=2, mask=mask)
 
 

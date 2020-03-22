@@ -1,8 +1,5 @@
-import nose
 import traces
 import unittest
-
-# @unittest.skip("not fully fleshed out yet")
 
 
 def test_missing():

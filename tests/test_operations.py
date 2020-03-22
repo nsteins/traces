@@ -1,5 +1,5 @@
 import datetime
-import nose
+from pytest import raises
 from traces import TimeSeries
 from traces.decorators import ignorant, strict
 
@@ -247,7 +247,8 @@ def test_interpolation():
     assert ts.get(-1, interpolate='linear') is None
     assert ts.get(2, interpolate='linear') == 2
 
-    nose.tools.assert_raises(ValueError, ts.get, 0.5, 'spline')
+    with raises(ValueError):
+        ts.get(0.5, interpolate='spline')
 
 
 def test_default():
@@ -268,4 +269,4 @@ def test_difference():
     b = TimeSeries(data=[(1, 1), (3, 2)], default=0)
 
     c = a - b
-    nose.tools.eq_(list(c.items()), [(0, 0), (1, -1), (2, 1), (3, 0)])
+    assert list(c.items()) == [(0, 0), (1, -1), (2, 1), (3, 0)]
